@@ -28,7 +28,17 @@ class ChartsViewController: UIViewController, ChartDelegate, CryptoManagerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "gradient"), for: .default)
+        if #available(iOS 15, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundImage = UIImage(named: "gradient")
+            appearance.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
+                                              .foregroundColor: UIColor.white]
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        } else {
+            navigationController?.navigationBar.setBackgroundImage(UIImage(named: "gradient"), for: .default)
+        }
         
         let titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Arial", size: 18), NSAttributedString.Key.foregroundColor:UIColor.white]
         segmentedControl.setTitleTextAttributes(titleTextAttributes, for: .selected)
@@ -68,6 +78,7 @@ class ChartsViewController: UIViewController, ChartDelegate, CryptoManagerDelega
         chart.lineWidth = 0.8
         chart.xLabelsTextAlignment = .center
         chart.yLabelsOnRightSide = true
+        chart.gridColor = .white
         chart.add(series)
     }
     
@@ -75,6 +86,7 @@ class ChartsViewController: UIViewController, ChartDelegate, CryptoManagerDelega
         
         if let title = sender.titleForSegment(at: sender.selectedSegmentIndex) {
             chart.removeAllSeries()
+            label.text = ""
             duration = title
             cryptoManager.performRequest(currency: currency, isHistorical: true, duration: duration)
         }

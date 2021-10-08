@@ -18,8 +18,26 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "gradient"),
-                                                                    for: .default)
+        if #available(iOS 15, *) {
+            
+            let tabBarAppearance = UITabBarAppearance()
+            tabBarAppearance.backgroundColor = .white
+//            tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: selectedItemTextColor]
+//            tabBarAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: unselectedItemTextColor]
+            tabBarController?.tabBar.standardAppearance = tabBarAppearance
+            tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
+            tabBarController?.tabBar.barTintColor = .white
+            
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundImage = UIImage(named: "gradient")
+            appearance.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
+                                              .foregroundColor: UIColor.white]
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        } else {
+            navigationController?.navigationBar.setBackgroundImage(UIImage(named: "gradient"), for: .default)
+        }
         
         manageUI()
     }

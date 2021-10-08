@@ -55,7 +55,6 @@ struct CryptoManager {
             if isHistorical {
                 let decodedData = try decoder.decode(HistoryDataModel.self, from: data)
                 var priceArray = [Double]()
-                print("ddd")
                 for price in decodedData {
                     priceArray.append(price.priceClose)
                 }
@@ -134,7 +133,7 @@ struct CryptoManager {
     }
     
     func calculateDate(date: Int) -> String {
-        var calculatedDate = 0
+//        var calculatedDate = 0
         if String(date).count == 1 {
             return "0\(date)"
         } else {
